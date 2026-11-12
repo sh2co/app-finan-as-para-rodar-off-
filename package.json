@@ -1,0 +1,13 @@
+{
+  "name": "financas-facil",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@capacitor/android": "^8",
+    "@capacitor/cli": "^8",
+    "@capacitor/core": "^8",
+    "@capacitor/filesystem": "^8",
+    "@capacitor/local-notifications": "^8",
+    "@capacitor/share": "^8"
+  }
+}
