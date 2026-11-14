@@ -33,8 +33,27 @@ jobs:
         run: |
           mkdir -p ~/.android
           cp debug.keystore ~/.android/debug.keystore
+      - name: Fixar assinatura no projeto
+        run: |
+          cat >> android/app/build.gradle <<'GRADLE'
+
+          android {
+              signingConfigs {
+                  debug {
+                      storeFile file('../../debug.keystore')
+                      storePassword 'android'
+                      keyAlias 'androiddebugkey'
+                      keyPassword 'android'
+                  }
+              }
+          }
+          GRADLE
       - name: Gerar APK
         run: cd android && chmod +x gradlew && ./gradlew assembleDebug
+      - name: Mostrar assinatura do APK
+        run: |
+          BT=$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -1)
+          $BT/apksigner verify --print-certs android/app/build/outputs/apk/debug/app-debug.apk | grep -i "SHA-256" || true
       - name: Guardar APK
         uses: actions/upload-artifact@v4
         with:
